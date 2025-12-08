@@ -13,27 +13,22 @@ Trademarks: This software listing is packaged by Bitnami. The respective tradema
 docker run --name kafka bitnami/kafka:latest
 ```
 
-## ⚠️ Important Notice: Upcoming changes to the Bitnami Catalog
-
-Beginning August 28th, 2025, Bitnami will evolve its public catalog to offer a curated set of hardened, security-focused images under the new [Bitnami Secure Images initiative](https://news.broadcom.com/app-dev/broadcom-introduces-bitnami-secure-images-for-production-ready-containerized-applications). As part of this transition:
-
-- Granting community users access for the first time to security-optimized versions of popular container images.
-- Bitnami will begin deprecating support for non-hardened, Debian-based software images in its free tier and will gradually remove non-latest tags from the public catalog. As a result, community users will have access to a reduced number of hardened images. These images are published only under the “latest” tag and are intended for development purposes
-- Starting August 28th, over two weeks, all existing container images, including older or versioned tags (e.g., 2.50.0, 10.6), will be migrated from the public catalog (docker.io/bitnami) to the “Bitnami Legacy” repository (docker.io/bitnamilegacy), where they will no longer receive updates.
-- For production workloads and long-term support, users are encouraged to adopt Bitnami Secure Images, which include hardened containers, smaller attack surfaces, CVE transparency (via VEX/KEV), SBOMs, and enterprise support.
-
-These changes aim to improve the security posture of all Bitnami users by promoting best practices for software supply chain integrity and up-to-date deployments. For more details, visit the [Bitnami Secure Images announcement](https://github.com/bitnami/containers/issues/83267).
-
 ## Why use Bitnami Secure Images?
 
-- Bitnami Secure Images and Helm charts are built to make open source more secure and enterprise ready.
-- Triage security vulnerabilities faster, with transparency into CVE risks using industry standard Vulnerability Exploitability Exchange (VEX), KEV, and EPSS scores.
-- Our hardened images use a minimal OS (Photon Linux), which reduces the attack surface while maintaining extensibility through the use of an industry standard package format.
-- Stay more secure and compliant with continuously built images updated within hours of upstream patches.
-- Bitnami containers, virtual machines and cloud images use the same components and configuration approach - making it easy to switch between formats based on your project needs.
-- Hardened images come with attestation signatures (Notation), SBOMs, virus scan reports and other metadata produced in an SLSA-3 compliant software factory.
+Those are hardened, minimal CVE images built and maintained by Bitnami. Bitnami Secure Images are based on the cloud-optimized, security-hardened enterprise [OS Photon Linux](https://vmware.github.io/photon/). Why choose BSI images?
 
-Only a subset of BSI applications are available for free. Looking to access the entire catalog of applications as well as enterprise support? Try the [commercial edition of Bitnami Secure Images today](https://www.arrow.com/globalecs/uk/products/bitnami-secure-images/).
+- Hardened secure images of popular open source software with Near-Zero Vulnerabilities
+- Vulnerability Triage & Prioritization with VEX Statements, KEV and EPSS Scores
+- Compliance focus with FIPS, STIG, and air-gap options, including secure bill of materials (SBOM)
+- Software supply chain provenance attestation through in-toto
+- First class support for the internet’s favorite Helm charts
+
+Each image comes with valuable security metadata. You can view the metadata in [our public catalog here](https://app-catalog.vmware.com/bitnami/apps). Note: Some data is only available with [commercial subscriptions to BSI](https://bitnami.com/).
+
+![Alt text](https://github.com/bitnami/containers/blob/main/BSI%20UI%201.png?raw=true "Application details")
+![Alt text](https://github.com/bitnami/containers/blob/main/BSI%20UI%202.png?raw=true "Packaging report")
+
+If you are looking for our previous generation of images based on Debian Linux, please see the [Bitnami Legacy registry](https://hub.docker.com/u/bitnamilegacy).
 
 ## How to deploy Apache Kafka in Kubernetes?
 
@@ -124,7 +119,6 @@ docker run -d --name kafka-server --hostname kafka-server \
     -e KAFKA_CFG_PROCESS_ROLES=controller,broker \
     -e KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093 \
     -e KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT \
-    -e KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka-server:9093 \
     -e KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER \
     bitnami/kafka:latest
 ```
@@ -160,7 +154,6 @@ services:
       - KAFKA_CFG_PROCESS_ROLES=controller,broker
       - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
-      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
   myapp:
     image: YOUR_APPLICATION_IMAGE
@@ -185,35 +178,36 @@ docker-compose up -d
 
 #### Customizable environment variables
 
-| Name                                      | Description                                                                                                                           | Default Value                       |
-|-------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------|
-| `KAFKA_MOUNTED_CONF_DIR`                  | Kafka directory for mounted configuration files.                                                                                      | `${KAFKA_VOLUME_DIR}/config`        |
-| `KAFKA_CLUSTER_ID`                        | Kafka cluster ID.                                                                                                                     | `nil`                               |
-| `KAFKA_INITIAL_CONTROLLERS`               | List of Kafka cluster initial controllers.                                                                                            | `nil`                               |
-| `KAFKA_SKIP_KRAFT_STORAGE_INIT`           | If set to true, skip Kraft storage initialization when process.roles are configured.                                                  | `false`                             |
-| `KAFKA_CFG_SASL_ENABLED_MECHANISMS`       | Kafka `sasl.enabled.mechanisms` configuration override.                                                                               | `PLAIN,SCRAM-SHA-256,SCRAM-SHA-512` |
-| `KAFKA_CLIENT_LISTENER_NAME`              | Name of the listener intended to be used by clients, if set, configures the producer/consumer accordingly.                            | `nil`                               |
-| `KAFKA_OPTS`                              | Kafka deployment options.                                                                                                             | `nil`                               |
-| `KAFKA_ZOOKEEPER_PROTOCOL`                | Authentication protocol for Zookeeper connections. Allowed protocols: `PLAINTEXT`, `SASL, SSL`, and `SASL_SSL`.                       | `PLAINTEXT`                         |
-| `KAFKA_ZOOKEEPER_PASSWORD`                | Kafka Zookeeper user password for SASL authentication.                                                                                | `nil`                               |
-| `KAFKA_ZOOKEEPER_USER`                    | Kafka Zookeeper user for SASL authentication.                                                                                         | `nil`                               |
-| `KAFKA_ZOOKEEPER_TLS_TYPE`                | Choose the TLS certificate format to use. Allowed values: `JKS`, `PEM`.                                                               | `JKS`                               |
-| `KAFKA_ZOOKEEPER_TLS_TRUSTSTORE_FILE`     | Kafka Zookeeper truststore file location.                                                                                             | `nil`                               |
-| `KAFKA_ZOOKEEPER_TLS_KEYSTORE_PASSWORD`   | Kafka Zookeeper keystore file password and key password.                                                                              | `nil`                               |
-| `KAFKA_ZOOKEEPER_TLS_TRUSTSTORE_PASSWORD` | Kafka Zookeeper truststore file password.                                                                                             | `nil`                               |
-| `KAFKA_ZOOKEEPER_TLS_VERIFY_HOSTNAME`     | Verify Zookeeper hostname on TLS certificates.                                                                                        | `true`                              |
-| `KAFKA_INTER_BROKER_USER`                 | Kafka inter broker communication user.                                                                                                | `user`                              |
-| `KAFKA_INTER_BROKER_PASSWORD`             | Kafka inter broker communication password.                                                                                            | `bitnami`                           |
-| `KAFKA_CONTROLLER_USER`                   | Kafka control plane communication user.                                                                                               | `controller_user`                   |
-| `KAFKA_CONTROLLER_PASSWORD`               | Kafka control plane communication password.                                                                                           | `bitnami`                           |
-| `KAFKA_CERTIFICATE_PASSWORD`              | Password for certificates.                                                                                                            | `nil`                               |
-| `KAFKA_TLS_TRUSTSTORE_FILE`               | Kafka truststore file location.                                                                                                       | `nil`                               |
-| `KAFKA_TLS_TYPE`                          | Choose the TLS certificate format to use.                                                                                             | `JKS`                               |
-| `KAFKA_TLS_CLIENT_AUTH`                   | Configures kafka broker to request client authentication.                                                                             | `required`                          |
-| `KAFKA_CLIENT_USERS`                      | List of users that will be created when using `SASL_SCRAM` for client communications. Separated by commas, semicolons or whitespaces. | `user`                              |
-| `KAFKA_CLIENT_PASSWORDS`                  | Passwords for the users specified at `KAFKA_CLIENT_USERS`. Separated by commas, semicolons or whitespaces.                            | `bitnami`                           |
-| `KAFKA_HEAP_OPTS`                         | Kafka heap options for Java.                                                                                                          | `-Xmx1024m -Xms1024m`               |
-| `JAVA_TOOL_OPTIONS`                       | Java tool options.                                                                                                                    | `nil`                               |
+| Name                                            | Description                                                                                                                           | Default Value                       |
+|-------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------|
+| `KAFKA_MOUNTED_CONF_DIR`                        | Kafka directory for mounted configuration files.                                                                                      | `${KAFKA_VOLUME_DIR}/config`        |
+| `KAFKA_CLUSTER_ID`                              | Kafka cluster ID.                                                                                                                     | `nil`                               |
+| `KAFKA_CFG_CONTROLLER_QUORUM_BOOTSTRAP_SERVERS` | List of endpoints to use for bootstrapping the cluster metadata.                                                                      | `localhost:9093`                    |
+| `KAFKA_INITIAL_CONTROLLERS`                     | List of Kafka cluster initial controllers.                                                                                            | `nil`                               |
+| `KAFKA_SKIP_KRAFT_STORAGE_INIT`                 | If set to true, skip Kraft storage initialization when process.roles are configured.                                                  | `false`                             |
+| `KAFKA_CFG_SASL_ENABLED_MECHANISMS`             | Kafka `sasl.enabled.mechanisms` configuration override.                                                                               | `PLAIN,SCRAM-SHA-256,SCRAM-SHA-512` |
+| `KAFKA_CLIENT_LISTENER_NAME`                    | Name of the listener intended to be used by clients, if set, configures the producer/consumer accordingly.                            | `nil`                               |
+| `KAFKA_OPTS`                                    | Kafka deployment options.                                                                                                             | `nil`                               |
+| `KAFKA_ZOOKEEPER_PROTOCOL`                      | Authentication protocol for Zookeeper connections. Allowed protocols: `PLAINTEXT`, `SASL, SSL`, and `SASL_SSL`.                       | `PLAINTEXT`                         |
+| `KAFKA_ZOOKEEPER_PASSWORD`                      | Kafka Zookeeper user password for SASL authentication.                                                                                | `nil`                               |
+| `KAFKA_ZOOKEEPER_USER`                          | Kafka Zookeeper user for SASL authentication.                                                                                         | `nil`                               |
+| `KAFKA_ZOOKEEPER_TLS_TYPE`                      | Choose the TLS certificate format to use. Allowed values: `JKS`, `PEM`.                                                               | `JKS`                               |
+| `KAFKA_ZOOKEEPER_TLS_TRUSTSTORE_FILE`           | Kafka Zookeeper truststore file location.                                                                                             | `nil`                               |
+| `KAFKA_ZOOKEEPER_TLS_KEYSTORE_PASSWORD`         | Kafka Zookeeper keystore file password and key password.                                                                              | `nil`                               |
+| `KAFKA_ZOOKEEPER_TLS_TRUSTSTORE_PASSWORD`       | Kafka Zookeeper truststore file password.                                                                                             | `nil`                               |
+| `KAFKA_ZOOKEEPER_TLS_VERIFY_HOSTNAME`           | Verify Zookeeper hostname on TLS certificates.                                                                                        | `true`                              |
+| `KAFKA_INTER_BROKER_USER`                       | Kafka inter broker communication user.                                                                                                | `user`                              |
+| `KAFKA_INTER_BROKER_PASSWORD`                   | Kafka inter broker communication password.                                                                                            | `bitnami`                           |
+| `KAFKA_CONTROLLER_USER`                         | Kafka control plane communication user.                                                                                               | `controller_user`                   |
+| `KAFKA_CONTROLLER_PASSWORD`                     | Kafka control plane communication password.                                                                                           | `bitnami`                           |
+| `KAFKA_CERTIFICATE_PASSWORD`                    | Password for certificates.                                                                                                            | `nil`                               |
+| `KAFKA_TLS_TRUSTSTORE_FILE`                     | Kafka truststore file location.                                                                                                       | `nil`                               |
+| `KAFKA_TLS_TYPE`                                | Choose the TLS certificate format to use.                                                                                             | `JKS`                               |
+| `KAFKA_TLS_CLIENT_AUTH`                         | Configures kafka broker to request client authentication.                                                                             | `required`                          |
+| `KAFKA_CLIENT_USERS`                            | List of users that will be created when using `SASL_SCRAM` for client communications. Separated by commas, semicolons or whitespaces. | `user`                              |
+| `KAFKA_CLIENT_PASSWORDS`                        | Passwords for the users specified at `KAFKA_CLIENT_USERS`. Separated by commas, semicolons or whitespaces.                            | `bitnami`                           |
+| `KAFKA_HEAP_OPTS`                               | Kafka heap options for Java.                                                                                                          | `-Xmx1024m -Xms1024m`               |
+| `JAVA_TOOL_OPTIONS`                             | Java tool options.                                                                                                                    | `nil`                               |
 
 #### Read-only environment variables
 
@@ -263,7 +257,6 @@ services:
       - KAFKA_CFG_PROCESS_ROLES=controller,broker
       - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
-      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
 ```
 
@@ -283,7 +276,6 @@ To do so, add the following environment variables to your docker-compose:
     environment:
       - KAFKA_CFG_NODE_ID=0
       - KAFKA_CFG_PROCESS_ROLES=controller,broker
-      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@<your_host>:9093
 +     - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094
 +     - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,EXTERNAL://localhost:9094
 +     - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
@@ -376,7 +368,6 @@ services:
       # KRaft
       - KAFKA_CFG_NODE_ID=0
       - KAFKA_CFG_PROCESS_ROLES=controller,broker
-      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
       # Listeners
       - KAFKA_CFG_LISTENERS=SASL_SSL://:9092,CONTROLLER://:9093
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:SASL_PLAINTEXT,SASL_SSL:SASL_SSL
@@ -496,7 +487,8 @@ In order to authenticate Apache Kafka controller communications with `SASL_SSL`,
 
 An Apache Kafka cluster can easily be setup with the Bitnami Apache Kafka Docker image using the following environment variables:
 
-- `KAFKA_CFG_CONTROLLER_QUORUM_VOTERS`: Comma separated host:port pairs, each corresponding to a Kafka controller connection.
+- `KAFKA_CFG_CONTROLLER_QUORUM_BOOTSTRAP_SERVERS`: List of endpoints to use for bootstrapping the cluster metadata. The endpoints are specified in comma-separated list of {host}:{port} entries.
+- `KAFKA_INITIAL_CONTROLLERS`: Used to initialize a server with the specified dynamic quorum. The argument is a comma-separated list of id@hostname:port:directory. The same values must be used to format all nodes.
 
 #### Step 1: Create the first node for Apache Kafka
 
@@ -509,7 +501,8 @@ docker run --name kafka-0 \
   -e KAFKA_CFG_PROCESS_ROLES=controller,broker \
   -e KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093 \
   -e KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT \
-  -e KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka-0:9093,1@kafka-1:9093,2@kafka-2:9093 \
+  -e KAFKA_CFG_CONTROLLER_QUORUM_BOOTSTRAP_SERVERS=kafka-0:9093,kafka-1:9093,kafka-2:9093 \
+  -e KAFKA_INITIAL_CONTROLLERS=0@kafka-0:9093:bcdefghijklmnopqrstuvw,1@kafka-1:9093:cdefghijklmnopqrstuvwx,2@kafka-2:9093:defghijklmnopqrstuvwxy \
   -e KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR=3 \
   -e KAFKA_CFG_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=3 \
   -e KAFKA_CFG_TRANSACTION_STATE_LOG_MIN_ISR=2 \
@@ -530,7 +523,8 @@ docker run --name kafka-1 \
   -e KAFKA_CFG_PROCESS_ROLES=controller,broker \
   -e KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093 \
   -e KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT \
-  -e KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka-0:9093,1@kafka-1:9093,2@kafka-2:9093 \
+  -e KAFKA_CFG_CONTROLLER_QUORUM_BOOTSTRAP_SERVERS=kafka-0:9093,kafka-1:9093,kafka-2:9093 \
+  -e KAFKA_INITIAL_CONTROLLERS=0@kafka-0:9093:bcdefghijklmnopqrstuvw,1@kafka-1:9093:cdefghijklmnopqrstuvwx,2@kafka-2:9093:defghijklmnopqrstuvwxy \
   -e KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR=3 \
   -e KAFKA_CFG_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=3 \
   -e KAFKA_CFG_TRANSACTION_STATE_LOG_MIN_ISR=2 \
@@ -551,7 +545,8 @@ docker run --name kafka-3 \
   -e KAFKA_CFG_PROCESS_ROLES=controller,broker \
   -e KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093 \
   -e KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT \
-  -e KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka-0:9093,1@kafka-1:9093,2@kafka-2:9093 \
+  -e KAFKA_CFG_CONTROLLER_QUORUM_BOOTSTRAP_SERVERS=kafka-0:9093,kafka-1:9093,kafka-2:9093 \
+  -e KAFKA_INITIAL_CONTROLLERS=0@kafka-0:9093:bcdefghijklmnopqrstuvw,1@kafka-1:9093:cdefghijklmnopqrstuvwx,2@kafka-2:9093:defghijklmnopqrstuvwxy \
   -e KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR=3 \
   -e KAFKA_CFG_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=3 \
   -e KAFKA_CFG_TRANSACTION_STATE_LOG_MIN_ISR=2 \
@@ -598,7 +593,8 @@ services:
       - KAFKA_CFG_PROCESS_ROLES=controller,broker
       - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
-      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka-0:9093,1@kafka-1:9093
+      - KAFKA_CFG_CONTROLLER_QUORUM_BOOTSTRAP_SERVERS=kafka-0:9093,kafka-1:9093
+      - KAFKA_INITIAL_CONTROLLERS=0@kafka-0:9093:bcdefghijklmnopqrstuvw,1@kafka-1:9093:cdefghijklmnopqrstuvwx
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
       - KAFKA_CLUSTER_ID=abcdefghijklmnopqrstuv
     volumes:
@@ -610,7 +606,8 @@ services:
       - KAFKA_CFG_PROCESS_ROLES=controller
       - KAFKA_CFG_LISTENERS=CONTROLLER://:9093
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT
-      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka-0:9093,1@kafka-1:9093
+      - KAFKA_CFG_CONTROLLER_QUORUM_BOOTSTRAP_SERVERS=kafka-0:9093,kafka-1:9093
+      - KAFKA_INITIAL_CONTROLLERS=0@kafka-0:9093:bcdefghijklmnopqrstuvw,1@kafka-1:9093:cdefghijklmnopqrstuvwx
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
       - KAFKA_CLUSTER_ID=abcdefghijklmnopqrstuv
     volumes:
@@ -620,7 +617,7 @@ services:
     environment:
       - KAFKA_CFG_NODE_ID=2
       - KAFKA_CFG_PROCESS_ROLES=broker
-      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka-0:9093,1@kafka-1:9093
+      - KAFKA_CFG_CONTROLLER_QUORUM_BOOTSTRAP_SERVERS=kafka-0:9093,kafka-1:9093
     volumes:
       - kafka_2_data:/bitnami/kafka
 
@@ -683,7 +680,7 @@ docker-compose restart kafka
 
 ### FIPS configuration in Bitnami Secure Images
 
-The Bitnami Apache Kafka Docker image from the [Bitnami Secure Images](https://www.arrow.com/globalecs/uk/products/bitnami-secure-images/) catalog includes extra features and settings to configure the container with FIPS capabilities. You can configure the next environment variables:
+The Bitnami Apache Kafka Docker image from the [Bitnami Secure Images](https://go-vmware.broadcom.com/contact-us) catalog includes extra features and settings to configure the container with FIPS capabilities. You can configure the next environment variables:
 
 - `OPENSSL_FIPS`: whether OpenSSL runs in FIPS mode or not. `yes` (default), `no`.
 
@@ -849,6 +846,10 @@ This guide covers how to execute the Kafka migration from Zookeeper mode to KRaf
     ```
 
 ## Notable Changes
+
+### 4.1.1-debian-12-r1, 4.1.1-photon-5-r2
+
+Updated the logic to configure contoller.quorum.bootstrap.servers parameter instead of controller.quorum.voters. That affects the initialization and setting the KAFKA_INITIAL_CONTROLLERS env var is now mandatory when building a cluster.
 
 ### 4.0.0-debian-12-r0
 
