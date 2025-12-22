@@ -119,6 +119,24 @@ kafka_is_zookeeper_supported() {
 }
 
 ########################
+# Returns true if dynamic controller quorum is supported
+# Globals:
+#   None
+# Arguments:
+#   None
+# Returns:
+#   true/false
+#########################
+kafka_is_dynamic_controller_quorum_supported() {
+    major_version="$(get_sematic_version "$(kafka_get_version)" 1)"
+    minor_version="$(get_sematic_version "$(kafka_get_version)" 2)"
+    if ([[ "$major_version" -eq "3" ]] && [[ "$minor_version" -ge "9" ]]) || ([[ "$major_version" -ge "4" ]]); then
+        return
+    fi
+    return 1
+}
+
+########################
 # Returns true if at least one listener is configured using SSL
 # Globals:
 #   KAFKA_CFG_LISTENERS
@@ -896,7 +914,7 @@ kafka_kraft_storage_initialize() {
             args+=("--add-scram" "SCRAM-SHA-512=[name=${KAFKA_CONTROLLER_USER},password=${KAFKA_CONTROLLER_PASSWORD}]")
         fi
     fi
-    if ! kafka_is_zookeeper_supported && [[ "${KAFKA_CFG_PROCESS_ROLES:-}" =~ "controller" ]]; then
+    if kafka_is_dynamic_controller_quorum_supported && [[ "${KAFKA_CFG_PROCESS_ROLES:-}" =~ "controller" ]] && [[ "${KAFKA_KRAFT_VERSION:-}" -eq "1" ]]; then
         args+=("--feature=kraft.version=1")
         if [[ -n "${KAFKA_INITIAL_CONTROLLERS:-}" ]]; then
             args+=("--initial-controllers=${KAFKA_INITIAL_CONTROLLERS}")
@@ -906,7 +924,9 @@ kafka_kraft_storage_initialize() {
     fi
 
     info "Formatting storage directories to add metadata..."
-    debug_execute "${KAFKA_HOME}/bin/kafka-storage.sh" format "${args[@]}"
+    cmd=("${KAFKA_HOME}/bin/kafka-storage.sh" "format")
+    am_i_root && cmd=("run_as_user" "$KAFKA_DAEMON_USER" "${cmd[@]}")
+    debug_execute "${cmd[@]}" "${args[@]}"
 }
 
 ########################
