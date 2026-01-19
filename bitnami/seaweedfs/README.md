@@ -68,7 +68,7 @@ Non-root container images add an extra layer of security and are generally recom
 
 ### Running commands
 
-To run commands inside this container you can use `docker run`. In this container the entrypoint is the `weed` binary, if you want to execute `weed help` you can follow the example below:
+To2 run commands inside this container you can use `docker run`. In this container the entrypoint is the `weed` binary, if you want to execute `weed help` you can follow the example below:
 
 ```console
 docker run --rm --name seaweedfs bitnami/seaweedfs:latest help
