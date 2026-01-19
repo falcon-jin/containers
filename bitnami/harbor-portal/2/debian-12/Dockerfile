@@ -7,13 +7,13 @@ ARG DOWNLOADS_URL="downloads.bitnami.com/files/stacksmith"
 ARG TARGETARCH
 
 LABEL org.opencontainers.image.base.name="docker.io/bitnami/minideb:bookworm" \
-      org.opencontainers.image.created="2025-11-24T12:53:04Z" \
+      org.opencontainers.image.created="2026-01-15T08:51:14Z" \
       org.opencontainers.image.description="Application packaged by Broadcom, Inc." \
       org.opencontainers.image.documentation="https://github.com/bitnami/containers/tree/main/bitnami/harbor-portal/README.md" \
       org.opencontainers.image.source="https://github.com/bitnami/containers/tree/main/bitnami/harbor-portal" \
       org.opencontainers.image.title="harbor-portal" \
       org.opencontainers.image.vendor="Broadcom, Inc." \
-      org.opencontainers.image.version="2.14.1"
+      org.opencontainers.image.version="2.14.2"
 
 ENV HOME="/" \
     OS_ARCH="${TARGETARCH:-amd64}" \
@@ -23,14 +23,14 @@ ENV HOME="/" \
 COPY prebuildfs /
 SHELL ["/bin/bash", "-o", "errexit", "-o", "nounset", "-o", "pipefail", "-c"]
 # Install required system packages and dependencies
-RUN install_packages ca-certificates curl gettext libcrypt1 libgeoip1 libpcre3 libssl3 openssl procps zlib1g
+RUN install_packages ca-certificates curl gettext libcrypt1 libgcc-s1 libgeoip1 libicu72 liblzma5 libpcre3 libssl3 libstdc++6 libxml2 openssl procps zlib1g
 RUN --mount=type=secret,id=downloads_url,env=SECRET_DOWNLOADS_URL \
     DOWNLOADS_URL=${SECRET_DOWNLOADS_URL:-${DOWNLOADS_URL}} ; \
     mkdir -p /tmp/bitnami/pkg/cache/ ; cd /tmp/bitnami/pkg/cache/ || exit 1 ; \
     COMPONENTS=( \
-      "render-template-1.0.9-159-linux-${OS_ARCH}-debian-12" \
-      "nginx-1.29.3-0-linux-${OS_ARCH}-debian-12" \
-      "harbor-2.14.1-0-linux-${OS_ARCH}-debian-12" \
+      "render-template-1.0.9-160-linux-${OS_ARCH}-debian-12" \
+      "nginx-1.29.4-2-linux-${OS_ARCH}-debian-12" \
+      "harbor-2.14.2-0-linux-${OS_ARCH}-debian-12" \
     ) ; \
     for COMPONENT in "${COMPONENTS[@]}"; do \
       if [ ! -f "${COMPONENT}.tar.gz" ]; then \
@@ -52,7 +52,7 @@ RUN uninstall_packages curl
 COPY rootfs /
 RUN /opt/bitnami/scripts/nginx/postunpack.sh
 RUN /opt/bitnami/scripts/harbor-portal/postunpack.sh
-ENV APP_VERSION="2.14.1" \
+ENV APP_VERSION="2.14.2" \
     BITNAMI_APP_NAME="harbor-portal" \
     IMAGE_REVISION="0" \
     NGINX_HTTPS_PORT_NUMBER="" \
