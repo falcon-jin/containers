@@ -1,7 +1,5 @@
 # Bitnami Secure Image for ActiveMQ
 
-## What is ActiveMQ?
-
 > Apache ActiveMQ is an open source message broker written in Java together with a full Java Message Service (JMS) client.
 [Overview of ActiveMQ](https://activemq.apache.org/)
 Trademarks: This software listing is packaged by Bitnami. The respective trademarks mentioned in the offering are owned by the respective companies, and use of them does not imply any affiliation or endorsement.
@@ -61,6 +59,8 @@ Non-root container images add an extra layer of security and are generally recom
 
 ## Configuration
 
+The following section describes how to run commands
+
 ### Running commands
 
 To run commands inside this container, you can use `docker run`, for example to execute `activemq --help` you can follow the example below:
@@ -72,6 +72,8 @@ docker run --rm --name activemq bitnami/activemq:latest -- --help
 Check the [official ActiveMQ documentation](https://activemq.apache.org/ for more information.
 
 ### Environment variables
+
+The following tables list the main variables you can set.
 
 #### Customizable environment variables
 
@@ -109,6 +111,13 @@ Check the [official ActiveMQ documentation](https://activemq.apache.org/ for mor
 | `JAVA_HOME`                 | Java installation folder.                            | `${BITNAMI_ROOT_DIR}/java`          |
 | `ACTIVEMQ_PIDFILE`          | ActiveMQ output destination                          | `${ACTIVEMQ_PID_FILE}`              |
 | `ACTIVEMQ_OUT`              | ActiveMQ output destination                          | `${ACTIVEMQ_LOG_FILE}`              |
+
+### FIPS configuration in Bitnami Secure Images
+
+The Bitnami ActiveMQ Docker image from the [Bitnami Secure Images](https://go-vmware.broadcom.com/contact-us) catalog includes extra features and settings to configure the container with FIPS capabilities. You can configure the next environment variables:
+
+- `OPENSSL_FIPS`: whether OpenSSL runs in FIPS mode or not. `yes` (default), `no`.
+- `JAVA_TOOL_OPTIONS`: controls Java FIPS mode. Use `-Djava.security.properties==/opt/bitnami/java/conf/security/java.security.restricted` (restricted), `-Djava.security.properties==/opt/bitnami/java/conf/security/java.security.relaxed` (relaxed), or `-Djava.security.properties==/opt/bitnami/java/conf/security/java.security.original` (off).
 
 ## License
 
