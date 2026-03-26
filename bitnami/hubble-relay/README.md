@@ -1,7 +1,5 @@
 # Bitnami Secure Image for Hubble Relay
 
-## What is Hubble Relay?
-
 > Hubble Relay collects eBPF-based visibility data from every running Hubble server in a cluster by connecting to their respective gRPC APIs and providing an unique API that represents all of them.
 
 [Overview of Hubble Relay](https://cilium.io/)
@@ -44,10 +42,6 @@ Non-root container images add an extra layer of security and are generally recom
 
 Learn more about the Bitnami tagging policy and the difference between rolling tags and immutable tags [in our documentation page](https://techdocs.broadcom.com/us/en/vmware-tanzu/application-catalog/tanzu-application-catalog/services/tac-doc/apps-tutorials-understand-rolling-tags-containers-index.html).
 
-You can see the equivalence between the different tags by taking a look at the `tags-info.yaml` file present in the branch folder, i.e `bitnami/ASSET/BRANCH/DISTRO/tags-info.yaml`.
-
-Subscribe to project updates by watching the [bitnami/containers GitHub repo](https://github.com/bitnami/containers).
-
 ## Get this image
 
 The recommended way to get the Bitnami Hubble Relay Docker Image is to pull the prebuilt image from the [Docker Hub Registry](https://hub.docker.com/r/bitnami/hubble-relay).
@@ -72,6 +66,8 @@ docker build -t bitnami/APP:latest .
 
 ## Configuration
 
+The following section describes how to run commands
+
 ### Running commands
 
 To run commands inside this container you can use `docker run`, for example to execute `hubble-relay help` you can follow the example below:
@@ -87,14 +83,6 @@ Check the [official Hubble Relay documentation](https://docs.cilium.io/en/stable
 The Bitnami Hubble Relay Docker image from the [Bitnami Secure Images](https://go-vmware.broadcom.com/contact-us) catalog includes extra features and settings to configure the container with FIPS capabilities. You can configure the next environment variables:
 
 - `OPENSSL_FIPS`: whether OpenSSL runs in FIPS mode or not. `yes` (default), `no`.
-
-## Contributing
-
-We'd love for you to contribute to this container. You can request new features by creating an [issue](https://github.com/bitnami/containers/issues) or submitting a [pull request](https://github.com/bitnami/containers/pulls) with your contribution.
-
-## Issues
-
-If you encountered a problem running this container, you can file an [issue](https://github.com/bitnami/containers/issues/new/choose). For us to provide better support, be sure to fill the issue template.
 
 ## License
 

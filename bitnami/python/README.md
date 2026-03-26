@@ -1,7 +1,5 @@
 # Bitnami Secure Image for Python
 
-## What is Python?
-
 > Python is a programming language that lets you work quickly and integrate systems more effectively.
 
 [Overview of Python](https://www.python.org/)
@@ -66,10 +64,6 @@ Recommended for:
 
 Learn more about the Bitnami tagging policy and the difference between rolling tags and immutable tags [in our documentation page](https://techdocs.broadcom.com/us/en/vmware-tanzu/application-catalog/tanzu-application-catalog/services/tac-doc/apps-tutorials-understand-rolling-tags-containers-index.html).
 
-You can see the equivalence between the different tags by taking a look at the `tags-info.yaml` file present in the branch folder, i.e `bitnami/ASSET/BRANCH/DISTRO/tags-info.yaml`.
-
-Subscribe to project updates by watching the [bitnami/containers GitHub repo](https://github.com/bitnami/containers).
-
 ### Deprecation Note (2022-01-21)
 
 The `prod` tags has been removed; from now on just the regular container images will be released.
@@ -104,6 +98,10 @@ cd bitnami/APP/VERSION/OPERATING-SYSTEM
 docker build -t bitnami/APP:latest .
 ```
 
+## Using `docker-compose.yaml`
+
+Please be aware this file has not undergone internal testing. Consequently, we advise its use exclusively for development or testing purposes.
+
 ## Entering the REPL
 
 By default, running this image will drop you into the Python REPL, where you can interactively test and try things out in Python.
@@ -113,6 +111,8 @@ docker run -it --name python bitnami/python
 ```
 
 ## Configuration
+
+The following section describes how to run commands
 
 ### Running your Python script
 
@@ -152,60 +152,6 @@ python:
 The Bitnami Python Docker image from the [Bitnami Secure Images](https://go-vmware.broadcom.com/contact-us) catalog includes extra features and settings to configure the container with FIPS capabilities. You can configure the next environment variables:
 
 - `OPENSSL_FIPS`: whether OpenSSL runs in FIPS mode or not. `yes` (default), `no`.
-
-## Maintenance
-
-### Upgrade this image
-
-Bitnami provides up-to-date versions of Python, including security patches, soon after they are made upstream. We recommend that you follow these steps to upgrade your container.
-
-#### Step 1: Get the updated image
-
-```console
-docker pull bitnami/python:latest
-```
-
-or if you're using Docker Compose, update the value of the image property to `bitnami/python:latest`.
-
-#### Step 2: Remove the currently running container
-
-```console
-docker rm -v python
-```
-
-or using Docker Compose:
-
-```console
-docker-compose rm -v python
-```
-
-#### Step 3: Run the new image
-
-Re-create your container from the new image.
-
-```console
-docker run --name python bitnami/python:latest
-```
-
-or using Docker Compose:
-
-```console
-docker-compose up python
-```
-
-## Using `docker-compose.yaml`
-
-Please be aware this file has not undergone internal testing. Consequently, we advise its use exclusively for development or testing purposes.
-
-If you detect any issue in the `docker-compose.yaml` file, feel free to report it or contribute with a fix by following our [Contributing Guidelines](https://github.com/bitnami/containers/blob/main/CONTRIBUTING.md).
-
-## Contributing
-
-We'd love for you to contribute to this Docker image. You can request new features by creating an [issue](https://github.com/bitnami/containers/issues) or submitting a [pull request](https://github.com/bitnami/containers/pulls) with your contribution.
-
-## Issues
-
-If you encountered a problem running this container, you can file an [issue](https://github.com/bitnami/containers/issues/new/choose). For us to provide better support, be sure to fill the issue template.
 
 ## License
 

@@ -1,7 +1,5 @@
 # Bitnami Secure Image for HashiCorp Vault
 
-## What is HashiCorp Vault?
-
 > Vault is a tool for securely managing and accessing secrets using a unified interface. Features secure storage, dynamic secrets, data encryption and revocation.
 
 [Overview of HashiCorp Vault](https://www.vaultproject.io/)
@@ -36,7 +34,7 @@ Learn more about the Bitnami tagging policy and the difference between rolling t
 
 You can see the equivalence between the different tags by taking a look at the `tags-info.yaml` file present in the branch folder, i.e `bitnami/ASSET/BRANCH/DISTRO/tags-info.yaml`.
 
-Subscribe to project updates by watching the [bitnami/containers GitHub repo](https://github.com/bitnami/containers).
+Subscribe to project updates by watching the [bitnami/containers GitHub repository](https://github.com/bitnami/containers).
 
 ## Get this image
 
@@ -60,33 +58,9 @@ cd bitnami/APP/VERSION/OPERATING-SYSTEM
 docker build -t bitnami/APP:latest .
 ```
 
-## Maintenance
-
-### Upgrade this image
-
-Bitnami provides up-to-date versions of HashiCorp Vault, including security patches, soon after they are made upstream. We recommend that you follow these steps to upgrade your container.
-
-#### Step 1: Get the updated image
-
-```console
-docker pull bitnami/vault:latest
-```
-
-#### Step 2: Remove the currently running container
-
-```console
-docker rm -v vault
-```
-
-#### Step 3: Run the new image
-
-Re-create your container from the new image.
-
-```console
-docker run --name vault bitnami/vault:latest
-```
-
 ## Configuration
+
+The following sections describe how to run commands and configure FIPS.
 
 ### Running commands
 
@@ -104,19 +78,13 @@ The Bitnami HashiCorp Vault Docker image from the [Bitnami Secure Images](https:
 
 - `OPENSSL_FIPS`: whether OpenSSL runs in FIPS mode or not. `yes` (default), `no`.
 
-## Notable Changes
+## Notable changes
+
+The following subsections describe notable changes.
 
 ### Starting January 16, 2024
 
 - The `docker-compose.yaml` file has been removed, as it was solely intended for internal testing purposes.
-
-## Contributing
-
-We'd love for you to contribute to this Docker image. You can request new features by creating an [issue](https://github.com/bitnami/containers/issues) or submitting a [pull request](https://github.com/bitnami/containers/pulls) with your contribution.
-
-## Issues
-
-If you encountered a problem running this container, you can file an [issue](https://github.com/bitnami/containers/issues/new/choose). For us to provide better support, be sure to fill the issue template.
 
 ## License
 

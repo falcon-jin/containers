@@ -1,7 +1,5 @@
 # Bitnami Secure Image for Chainloop Control Plane migrations
 
-## What is Chainloop Control Plane migrations?
-
 > Atlas-based database migration controller for Chainloop.
 
 [Overview of Chainloop Control Plane migrations](https://chainloop.dev)
@@ -38,10 +36,6 @@ Non-root container images add an extra layer of security and are generally recom
 
 Learn more about the Bitnami tagging policy and the difference between rolling tags and immutable tags [in our documentation page](https://techdocs.broadcom.com/us/en/vmware-tanzu/application-catalog/tanzu-application-catalog/services/tac-doc/apps-tutorials-understand-rolling-tags-containers-index.html).
 
-You can see the equivalence between the different tags by taking a look at the `tags-info.yaml` file present in the branch folder, i.e `bitnami/ASSET/BRANCH/DISTRO/tags-info.yaml`.
-
-Subscribe to project updates by watching the [bitnami/containers GitHub repo](https://github.com/bitnami/containers).
-
 ## Get this image
 
 The recommended way to get the Bitnami Chainloop Control Plane migrations Docker Image is to pull the prebuilt image from the [Docker Hub Registry](https://hub.docker.com/r/bitnami/chainloop-control-plane-migrations).
@@ -66,6 +60,8 @@ docker build -t bitnami/APP:latest .
 
 ## Configuration
 
+The following section describes how to run commands
+
 ### Running commands
 
 To run commands inside this container you can use `docker run`, for example to execute `chainloop-control-plane-migrations help` you can follow the example below:
@@ -75,14 +71,6 @@ docker run --rm --name chainloop-control-plane-migrations bitnami/chainloop-cont
 ```
 
 Check the [official Chainloop Control Plane migrations documentation](https://github.com/chainloop-dev/chainloop/tree/main/app/controlplane) for more information about configuration options.
-
-## Contributing
-
-We'd love for you to contribute to this container. You can request new features by creating an [issue](https://github.com/bitnami/containers/issues) or submitting a [pull request](https://github.com/bitnami/containers/pulls) with your contribution.
-
-## Issues
-
-If you encountered a problem running this container, you can file an [issue](https://github.com/bitnami/containers/issues/new/choose). For us to provide better support, be sure to fill the issue template.
 
 ## License
 

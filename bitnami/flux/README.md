@@ -1,7 +1,5 @@
 # Bitnami Secure Image for Flux
 
-## What is Flux?
-
 > Flux is a tool for keeping Kubernetes clusters in sync with sources of configuration.
 
 [Overview of Flux](https://flux.io)
@@ -41,10 +39,6 @@ If you are looking for our previous generation of images based on Debian Linux, 
 
 Learn more about the Bitnami tagging policy and the difference between rolling tags and immutable tags [in our documentation page](https://techdocs.broadcom.com/us/en/vmware-tanzu/application-catalog/tanzu-application-catalog/services/tac-doc/apps-tutorials-understand-rolling-tags-containers-index.html).
 
-You can see the equivalence between the different tags by taking a look at the `tags-info.yaml` file present in the branch folder, i.e `bitnami/ASSET/BRANCH/DISTRO/tags-info.yaml`.
-
-Subscribe to project updates by watching the [bitnami/containers GitHub repo](https://github.com/bitnami/containers).
-
 ## Get this image
 
 The recommended way to get the Bitnami Flux Docker Image is to pull the prebuilt image from the [Docker Hub Registry](https://hub.docker.com/r/bitnami/fluxcd-source-controller).
@@ -67,47 +61,9 @@ cd bitnami/APP/VERSION/OPERATING-SYSTEM
 docker build -t bitnami/APP:latest .
 ```
 
-## Maintenance
-
-### Upgrade this image
-
-Bitnami provides up-to-date versions of Flux, including security patches, soon after they are made upstream. We recommend that you follow these steps to upgrade your container.
-
-#### Step 1: Get the updated image
-
-```console
-docker pull bitnami/fluxcd-source-controller:latest
-```
-
-or if you're using Docker Compose, update the value of the image property to `bitnami/fluxcd-source-controller:latest`.
-
-#### Step 2: Remove the currently running container
-
-```console
-docker rm -v fluxcd-source-controller
-```
-
-or using Docker Compose:
-
-```console
-docker-compose rm -v fluxcd-source-controller
-```
-
-#### Step 3: Run the new image
-
-Re-create your container from the new image.
-
-```console
-docker run --name fluxcd-source-controller bitnami/fluxcd-source-controller:latest
-```
-
-or using Docker Compose:
-
-```console
-docker-compose up fluxcd-source-controller
-```
-
 ## Configuration
+
+The following section describes how to run commands
 
 ### Running commands
 
@@ -124,14 +80,6 @@ Check the [official Flux documentation](https://flux.io) for more information ab
 The Bitnami Flux Docker image from the [Bitnami Secure Images](https://go-vmware.broadcom.com/contact-us) catalog includes extra features and settings to configure the container with FIPS capabilities. You can configure the next environment variables:
 
 - `OPENSSL_FIPS`: whether OpenSSL runs in FIPS mode or not. `yes` (default), `no`.
-
-## Contributing
-
-We'd love for you to contribute to this Docker image. You can request new features by creating an [issue](https://github.com/bitnami/containers/issues) or submitting a [pull request](https://github.com/bitnami/containers/pulls) with your contribution.
-
-## Issues
-
-If you encountered a problem running this container, you can file an [issue](https://github.com/bitnami/containers/issues/new/choose). For us to provide better support, be sure to fill the issue template.
 
 ## License
 

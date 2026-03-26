@@ -1,7 +1,5 @@
 # Bitnami Secure Image for VictoriaMetrics Auth
 
-## What is VictoriaMetrics Auth?
-
 > VictoriaMetrics is a fast, cost-effective, and scalable monitoring solution and time series database, compatible with Prometheus and Graphite
 
 [Overview of VictoriaMetrics Auth](https://victoriametrics.com/)
@@ -36,7 +34,7 @@ Learn more about the Bitnami tagging policy and the difference between rolling t
 
 You can see the equivalence between the different tags by taking a look at the `tags-info.yaml` file present in the branch folder, i.e `bitnami/ASSET/BRANCH/DISTRO/tags-info.yaml`.
 
-Subscribe to project updates by watching the [bitnami/containers GitHub repo](https://github.com/bitnami/containers).
+Subscribe to project updates by watching the [bitnami/containers GitHub repository](https://github.com/bitnami/containers).
 
 ## Get this image
 
@@ -66,6 +64,8 @@ Non-root container images add an extra layer of security and are generally recom
 
 ## Configuration
 
+The following section describes how to run commands inside the container.
+
 ### Running commands
 
 To run commands inside this container you can use `docker run`, for example to execute `vmauth --help` you can follow the example below:
@@ -75,14 +75,6 @@ docker run --rm --name victoriametrics-vmauth bitnami/victoriametrics-vmauth:lat
 ```
 
 Check the [official VictoriaMetrics Auth documentation](https://victoriametrics.com/) for more information.
-
-## Contributing
-
-We'd love for you to contribute to this container. You can request new features by creating an [issue](https://github.com/bitnami/containers/issues) or submitting a [pull request](https://github.com/bitnami/containers/pulls) with your contribution.
-
-## Issues
-
-If you encountered a problem running this container, you can file an [issue](https://github.com/bitnami/containers/issues/new/choose). For us to provide better support, be sure to fill the issue template.
 
 ## License
 

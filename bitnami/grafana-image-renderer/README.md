@@ -1,7 +1,5 @@
 # Bitnami Secure Image for Grafana Image Renderer
 
-## What is Grafana Image Renderer?
-
 > The Grafana Image Renderer is a plugin for Grafana that uses headless Chrome to render panels and dashboards as PNG images.
 
 [Overview of Grafana Image Renderer](https://github.com/grafana/grafana-image-renderer)
@@ -41,10 +39,6 @@ Non-root container images add an extra layer of security and are generally recom
 ## Supported tags and respective `Dockerfile` links
 
 Learn more about the Bitnami tagging policy and the difference between rolling tags and immutable tags [in our documentation page](https://techdocs.broadcom.com/us/en/vmware-tanzu/application-catalog/tanzu-application-catalog/services/tac-doc/apps-tutorials-understand-rolling-tags-containers-index.html).
-
-You can see the equivalence between the different tags by taking a look at the `tags-info.yaml` file present in the branch folder, i.e `bitnami/ASSET/BRANCH/DISTRO/tags-info.yaml`.
-
-Subscribe to project updates by watching the [bitnami/containers GitHub repo](https://github.com/bitnami/containers).
 
 ## Get this image
 
@@ -114,6 +108,8 @@ You can customize Grafana Image Renderer settings by replacing the default confi
 
 ### Environment variables
 
+The following tables list the main variables you can set.
+
 #### Customizable environment variables
 
 | Name                                    | Description                           | Default Value |
@@ -149,40 +145,6 @@ docker logs grafana-image-renderer
 
 You can configure the containers [logging driver](https://docs.docker.com/engine/admin/logging/overview/) using the `--log-driver` option if you wish to consume the container logs differently. In the default configuration docker uses the `json-file` driver.
 
-## Maintenance
-
-### Upgrade this image
-
-Bitnami provides up-to-date versions of Grafana Image Renderer, including security patches, soon after they are made upstream. We recommend that you follow these steps to upgrade your container.
-
-#### Step 1: Get the updated image
-
-```console
-docker pull bitnami/grafana-image-renderer:latest
-```
-
-#### Step 2: Stop the currently running container
-
-Stop the currently running container using the command
-
-```console
-docker stop grafana-image-renderer
-```
-
-#### Step 3: Remove the currently running container
-
-```console
-docker rm -v grafana-image-renderer
-```
-
-#### Step 4: Run the new image
-
-Re-create your container from the new image:
-
-```console
-docker run --name grafana-image-renderer bitnami/grafana-image-renderer:latest
-```
-
 ## Notable Changes
 
 ### 5.0.3-debian-12-r0
@@ -192,14 +154,6 @@ The entire service has been rewritten in Go, replacing the previous Node.js impl
 ### Starting January 16, 2024
 
 - The `docker-compose.yaml` file has been removed, as it was solely intended for internal testing purposes.
-
-## Contributing
-
-We'd love for you to contribute to this container. You can request new features by creating an [issue](https://github.com/bitnami/containers/issues) or submitting a [pull request](https://github.com/bitnami/containers/pulls) with your contribution.
-
-## Issues
-
-If you encountered a problem running this container, you can file an [issue](https://github.com/bitnami/containers/issues/new/choose). For us to provide better support, be sure to fill the issue template.
 
 ## License
 

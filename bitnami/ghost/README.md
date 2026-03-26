@@ -1,7 +1,5 @@
 # Bitnami Secure Image for Ghost
 
-## What is Ghost?
-
 > Ghost is an open source publishing platform designed to create blogs, magazines, and news sites. It includes a simple markdown editor with preview, theming, and SEO built-in to simplify editing.
 
 [Overview of Ghost](https://ghost.org/)
@@ -13,8 +11,7 @@ Trademarks: This software listing is packaged by Bitnami. The respective tradema
 docker run --name ghost bitnami/ghost:latest
 ```
 
-**Warning**: This quick setup is only intended for development environments. You are encouraged to change the insecure default credentials and check out the available configuration options in the [Environment Variables](#environment-variables) section for a more secure d
-eployment.
+**Warning**: This quick setup is only intended for development environments. You are encouraged to change the insecure default credentials and check out the available configuration options in the [Environment Variables](#environment-variables) section for a more secure deployment.
 
 ## Why use Bitnami Secure Images?
 
@@ -45,10 +42,6 @@ Non-root container images add an extra layer of security and are generally recom
 
 Learn more about the Bitnami tagging policy and the difference between rolling tags and immutable tags [in our documentation page](https://techdocs.broadcom.com/us/en/vmware-tanzu/application-catalog/tanzu-application-catalog/services/tac-doc/apps-tutorials-understand-rolling-tags-containers-index.html).
 
-You can see the equivalence between the different tags by taking a look at the `tags-info.yaml` file present in the branch folder, i.e `bitnami/ASSET/BRANCH/DISTRO/tags-info.yaml`.
-
-Subscribe to project updates by watching the [bitnami/containers GitHub repo](https://github.com/bitnami/containers).
-
 ## Get this image
 
 The recommended way to get the Bitnami Ghost Docker Image is to pull the prebuilt image from the [Docker Hub Registry](https://hub.docker.com/r/bitnami/ghost).
@@ -75,55 +68,9 @@ docker build -t bitnami/APP:latest .
 
 Ghost requires access to a MySQL or MariaDB database to store information. We'll use the [Bitnami Docker Image for MySQL](https://github.com/bitnami/containers/tree/main/bitnami/mysql) for the database requirements.
 
-### Using the Docker Command Line
-
-#### Step 1: Create a network
-
-```console
-docker network create ghost-network
-```
-
-#### Step 2: Create a volume for MySQL persistence and create a MySQL container
-
-```console
-$ docker volume create --name mysql_data
-docker run -d --name mysql \
-  --env ALLOW_EMPTY_PASSWORD=yes \
-  --env MYSQL_USER=bn_ghost \
-  --env MYSQL_PASSWORD=bitnami \
-  --env MYSQL_DATABASE=bitnami_ghost \
-  --network ghost-network \
-  --volume mysql_data:/bitnami/mysql \
-  bitnami/mysql:latest
-```
-
-#### Step 3: Create volumes for Ghost persistence and launch the container
-
-```console
-$ docker volume create --name ghost_data
-docker run -d --name ghost \
-  -p 8080:8080 -p 8443:8443 \
-  --env ALLOW_EMPTY_PASSWORD=yes \
-  --env GHOST_DATABASE_USER=bn_ghost \
-  --env GHOST_DATABASE_PASSWORD=bitnami \
-  --env GHOST_DATABASE_NAME=bitnami_ghost \
-  --network ghost-network \
-  --volume ghost_data:/bitnami/ghost \
-  bitnami/ghost:latest
-```
-
-Access your application at `http://your-ip/`
-
 ### Run the application using Docker Compose
 
-```console
-curl -sSL https://raw.githubusercontent.com/bitnami/containers/main/bitnami/ghost/docker-compose.yml > docker-compose.yml
-docker-compose up -d
-```
-
 Please be aware this file has not undergone internal testing. Consequently, we advise its use exclusively for development or testing purposes. For production-ready deployments, we highly recommend utilizing its associated [Bitnami Helm chart](https://github.com/bitnami/charts/tree/main/bitnami/ghost).
-
-If you detect any issue in the `docker-compose.yaml` file, feel free to report it or contribute with a fix by following our [Contributing Guidelines](https://github.com/bitnami/containers/blob/main/CONTRIBUTING.md).
 
 ## Persisting your application
 
@@ -135,70 +82,15 @@ The above examples define the Docker volumes named `mysql_data` and `ghost_data`
 
 To avoid inadvertent removal of volumes, you can [mount host directories as data volumes](https://docs.docker.com/engine/tutorials/dockervolumes/). Alternatively you can make use of volume plugins to host the volume data.
 
-### Mount host directories as data volumes with Docker Compose
-
-This requires a minor change to the [`docker-compose.yml`](https://github.com/bitnami/containers/blob/main/bitnami/ghost/docker-compose.yml) file present in this repository:
-
-```diff
-   mysql:
-     ...
-     volumes:
--      - mysql_data:/bitnami/mysql
-+      - /path/to/mysql-persistence:/bitnami/mysql
-   ...
-   ghost:
-     ...
-     volumes:
--      - ghost_data:/bitnami/ghost
-+      - /path/to/ghost-persistence:/bitnami/ghost
-   ...
--volumes:
--  mysql_data:
--    driver: local
--  ghost_data:
--    driver: local
-```
-
-> NOTE: As this is a non-root container, the mounted files and directories must have the proper permissions for the UID `1001`.
-
-### Mount host directories as data volumes using the Docker command line
-
-#### Step 1: Create a network (if it does not exist)
-
-```console
-docker network create ghost-network
-```
-
-#### Step 2. Create a MySQL container with host volume
-
-```console
-docker run -d --name mysql \
-  --env ALLOW_EMPTY_PASSWORD=yes \
-  --env MYSQL_USER=bn_ghost \
-  --env MYSQL_PASSWORD=bitnami \
-  --env MYSQL_DATABASE=bitnami_ghost \
-  --network ghost-network \
-  --volume /path/to/mysql-persistence:/bitnami/mysql \
-  bitnami/mysql:latest
-```
-
-#### Step 3. Create the Ghost container with host volumes
-
-```console
-docker run -d --name ghost \
-  -p 8080:8080 -p 8443:8443 \
-  --env ALLOW_EMPTY_PASSWORD=yes \
-  --env GHOST_DATABASE_USER=bn_ghost \
-  --env GHOST_DATABASE_PASSWORD=bitnami \
-  --env GHOST_DATABASE_NAME=bitnami_ghost \
-  --network ghost-network \
-  --volume /path/to/ghost-persistence:/bitnami/ghost \
-  bitnami/ghost:latest
-```
+> **NOTE** As this is a non-root container, the mounted files and directories must have the proper permissions for the UID `1001`.
 
 ## Configuration
 
+The following section describes the supported environment variables
+
 ### Environment variables
+
+The following tables list the main variables you can set.
 
 #### Customizable environment variables
 
@@ -244,103 +136,17 @@ docker run -d --name ghost \
 | `GHOST_DEFAULT_PORT_NUMBER`   | Default Ghost port number to enable at build time. | `2368`                                     |
 | `GHOST_DEFAULT_DATABASE_HOST` | Default database server host.                      | `mysql`                                    |
 
-When you start the Ghost image, you can adjust the configuration of the instance by passing one or more environment variables either on the docker-compose file or on the `docker run` command line. If you want to add a new environment variable:
-
-- For docker-compose add the variable name and value under the application section in the [`docker-compose.yml`](https://github.com/bitnami/containers/blob/main/bitnami/ghost/docker-compose.yml) file present in this repository:
-
-    ```yaml
-    ghost:
-      ...
-      environment:
-        - GHOST_PASSWORD=my_password
-      ...
-    ```
-
-- For manual execution add a `--env` option with each variable and value:
-
-    ```console
-    $ docker run -d --name ghost -p 80:8080 -p 443:8443 \
-      --env GHOST_PASSWORD=my_password \
-      --network ghost-tier \
-      --volume /path/to/ghost-persistence:/bitnami/ghost \
-      bitnami/ghost:latest
-    ```
+When you start the Ghost image, you can adjust the configuration of the instance by passing one or more environment variables either on the docker-compose file or on the `docker run` command line.
 
 #### Examples
 
-##### SMTP configuration using a Gmail account
+##### SMTP configuration
 
-This would be an example of SMTP configuration using a Gmail account:
-
-- Modify the [`docker-compose.yml`](https://github.com/bitnami/containers/blob/main/bitnami/ghost/docker-compose.yml) file present in this repository:
-
-    ```yaml
-      ghost:
-        ...
-        environment:
-          - GHOST_DATABASE_USER=bn_ghost
-          - GHOST_DATABASE_NAME=bitnami_ghost
-          - ALLOW_EMPTY_PASSWORD=yes
-          - GHOST_SMTP_HOST=smtp.gmail.com
-          - GHOST_SMTP_PORT=587
-          - GHOST_SMTP_USER=your_email@gmail.com
-          - GHOST_SMTP_PASSWORD=your_password
-          - GHOST_SMTP_FROM_ADDRESS=ghost@blog.com
-      ...
-    ```
-
-- For manual execution:
-
-    ```console
-    $ docker run -d --name ghost -p 80:8080 -p 443:8443 \
-      --env GHOST_DATABASE_USER=bn_ghost \
-      --env GHOST_DATABASE_NAME=bitnami_ghost \
-      --env GHOST_SMTP_HOST=smtp.gmail.com \
-      --env GHOST_SMTP_PORT=587 \
-      --env GHOST_SMTP_USER=your_email@gmail.com \
-      --env GHOST_SMTP_PASSWORD=your_password \
-      --env GHOST_SMTP_FROM_ADDRESS=ghost@blog.com \
-      --network ghost-tier \
-      --volume /path/to/ghost-persistence:/bitnami \
-      bitnami/ghost:latest
-    ```
+The `GHOST_SMTP_*` environment variables allows you configure the SMTP settings in the application. Please take a look at the environment variables information above for more information.
 
 ##### Connect Ghost container to an existing database
 
-The Bitnami Ghost container supports connecting the Ghost application to an external database. This would be an example of using an external database for Ghost.
-
-- Modify the [`docker-compose.yml`](https://github.com/bitnami/containers/blob/main/bitnami/ghost/docker-compose.yml) file present in this repository:
-
-    ```diff
-       ghost:
-         ...
-         environment:
-    -      - GHOST_DATABASE_HOST=mysql
-    +      - GHOST_DATABASE_HOST=mysql_host
-           - GHOST_DATABASE_PORT_NUMBER=3306
-           - GHOST_DATABASE_NAME=ghost_db
-           - GHOST_DATABASE_USER=ghost_user
-    -      - ALLOW_EMPTY_PASSWORD=yes
-    +      - GHOST_DATABASE_PASSWORD=ghost_password
-         ...
-    ```
-
-- For manual execution:
-
-    ```console
-    $ docker run -d --name ghost\
-      -p 8080:8080 -p 8443:8443 \
-      --network ghost-network \
-      --env GHOST_DATABASE_HOST=mysql_host \
-      --env GHOST_DATABASE_PORT_NUMBER=3306 \
-      --env GHOST_DATABASE_NAME=ghost_db \
-      --env GHOST_DATABASE_USER=ghost_user \
-      --env GHOST_DATABASE_PASSWORD=ghost_password \
-      --volume ghost_data:/bitnami/ghost \
-      bitnami/ghost:latest
-    ```
-
-In case the database already contains data from a previous Ghost installation, you need to set the variable `GHOST_SKIP_BOOTSTRAP` to `yes`. Otherwise, the container would execute the installation wizard and could modify the existing data in the database. Note that, when setting `GHOST_SKIP_BOOTSTRAP` to `yes`, values for environment variables such as `GHOST_USERNAME`, `GHOST_PASSWORD` or `GHOST_EMAIL` will be ignored.
+The Bitnami Ghost container supports connecting the Ghost application to an external database. In case the database already contains data from a previous Ghost installation, you need to set the variable `GHOST_SKIP_BOOTSTRAP` to `yes`. Otherwise, the container would execute the installation wizard and could modify the existing data in the database. Note that, when setting `GHOST_SKIP_BOOTSTRAP` to `yes`, values for environment variables such as `GHOST_USERNAME`, `GHOST_PASSWORD` or `GHOST_EMAIL` will be ignored.
 
 ### FIPS configuration in Bitnami Secure Images
 
@@ -415,46 +221,6 @@ For the Ghost container:
    bitnami/ghost:latest
 ```
 
-### Upgrade this image
-
-Bitnami provides up-to-date versions of MySQL and Ghost, including security patches, soon after they are made upstream. We recommend that you follow these steps to upgrade your container. We will cover here the upgrade of the Ghost container. For the MySQL upgrade see: <https://github.com/bitnami/containers/blob/main/bitnami/mysql/README.md#upgrade-this-image>
-
-The `bitnami/ghost:latest` tag always points to the most recent release. To get the most recent release you can simple repull the `latest` tag from the Docker Hub with `docker pull bitnami/ghost:latest`. However it is recommended to use [tagged versions](https://hub.docker.com/r/bitnami/ghost/tags/).
-
-#### Step 1: Get the updated image
-
-```console
-docker pull bitnami/ghost:latest
-```
-
-#### Step 2: Stop the running container
-
-Stop the currently running container using the command
-
-```console
-docker-compose stop ghost
-```
-
-#### Step 3: Take a snapshot of the application state
-
-Follow the steps in [Backing up your container](#backing-up-your-container) to take a snapshot of the current application state.
-
-#### Step 4: Remove the currently running container
-
-Remove the currently running container by executing the following command:
-
-```console
-docker-compose rm -v ghost
-```
-
-#### Step 5: Run the new image
-
-Update the image tag in `docker-compose.yml` and re-create your container with the new image:
-
-```console
-docker-compose up -d
-```
-
 ## Customize this image
 
 The Bitnami Ghost Docker image is designed to be extended so it can be used as the base image for your custom web applications.
@@ -526,14 +292,6 @@ Finally, build the container and set the required environment variables to confi
 ### 0.11.10-r2
 
 - The ghost container has been migrated to a non-root container approach. Previously the container run as `root` user and the ghost daemon was started as `ghost` user. From now own, both the container and the ghost daemon run as user `1001`. As a consequence, the configuration files are writable by the user running the ghost process.
-
-## Contributing
-
-We'd love for you to contribute to this container. You can request new features by creating an [issue](https://github.com/bitnami/containers/issues) or submitting a [pull request](https://github.com/bitnami/containers/pulls) with your contribution.
-
-## Issues
-
-If you encountered a problem running this container, you can file an [issue](https://github.com/bitnami/containers/issues/new/choose). For us to provide better support, be sure to fill the issue template.
 
 ## License
 
