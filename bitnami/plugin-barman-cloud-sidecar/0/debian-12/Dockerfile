@@ -7,13 +7,13 @@ ARG DOWNLOADS_URL="downloads.bitnami.com/files/stacksmith"
 ARG TARGETARCH
 
 LABEL org.opencontainers.image.base.name="docker.io/bitnami/minideb:bookworm" \
-      org.opencontainers.image.created="2026-03-10T16:28:34Z" \
+      org.opencontainers.image.created="2026-05-17T10:18:29Z" \
       org.opencontainers.image.description="Application packaged by Broadcom, Inc." \
       org.opencontainers.image.documentation="https://github.com/bitnami/containers/tree/main/bitnami/plugin-barman-cloud-sidecar/README.md" \
       org.opencontainers.image.source="https://github.com/bitnami/containers/tree/main/bitnami/plugin-barman-cloud-sidecar" \
       org.opencontainers.image.title="plugin-barman-cloud-sidecar" \
       org.opencontainers.image.vendor="Broadcom, Inc." \
-      org.opencontainers.image.version="0.11.0"
+      org.opencontainers.image.version="0.12.0"
 
 ENV HOME="/" \
     OS_ARCH="${TARGETARCH:-amd64}" \
@@ -28,10 +28,10 @@ RUN --mount=type=secret,id=downloads_url,env=SECRET_DOWNLOADS_URL \
     DOWNLOADS_URL=${SECRET_DOWNLOADS_URL:-${DOWNLOADS_URL}} ; \
     mkdir -p /tmp/bitnami/pkg/cache/ ; cd /tmp/bitnami/pkg/cache/ || exit 1 ; \
     COMPONENTS=( \
-      "plugin-barman-cloud-sidecar-0.11.0-1-linux-${OS_ARCH}-debian-12" \
-      "plugin-barman-cloud-0.11.0-4-linux-${OS_ARCH}-debian-12" \
-      "python-3.13.12-11-linux-${OS_ARCH}-debian-12" \
-      "postgresql-lib-18.3.0-0-linux-${OS_ARCH}-debian-12" \
+      "plugin-barman-cloud-sidecar-0.12.0-0-linux-${OS_ARCH}-debian-12" \
+      "plugin-barman-cloud-0.12.0-1-linux-${OS_ARCH}-debian-12" \
+      "python-3.13.13-8-linux-${OS_ARCH}-debian-12" \
+      "postgresql-lib-18.4.0-0-linux-${OS_ARCH}-debian-12" \
     ) ; \
     for COMPONENT in "${COMPONENTS[@]}"; do \
       if [ ! -f "${COMPONENT}.tar.gz" ]; then \
@@ -49,9 +49,9 @@ RUN find / -perm /6000 -type f -exec chmod a-s {} \; || true
 RUN ln -sf /opt/bitnami/plugin-barman-cloud/bin/manager /manager
 RUN uninstall_packages curl
 
-ENV APP_VERSION="0.11.0" \
+ENV APP_VERSION="0.12.0" \
     BITNAMI_APP_NAME="plugin-barman-cloud-sidecar" \
-    IMAGE_REVISION="4" \
+    IMAGE_REVISION="2" \
     LD_LIBRARY_PATH="/opt/bitnami/postgresql/lib:$LD_LIBRARY_PATH" \
     PATH="/opt/bitnami/plugin-barman-cloud/bin:/opt/bitnami/python/bin:$PATH"
 

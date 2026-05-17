@@ -42,25 +42,7 @@ Learn more about the Bitnami tagging policy and the difference between rolling t
 
 ## Get this image
 
-The recommended way to get the Bitnami Grafana Image Renderer Docker Image is to pull the prebuilt image from the [Docker Hub Registry](https://hub.docker.com/r/bitnami/grafana-image-renderer).
-
-```console
-docker pull bitnami/grafana-image-renderer:latest
-```
-
-To use a specific version, you can pull a versioned tag. You can view the [list of available versions](https://hub.docker.com/r/bitnami/grafana-image-renderer/tags/) in the Docker Hub Registry.
-
-```console
-docker pull bitnami/grafana-image-renderer:[TAG]
-```
-
-If you wish, you can also build the image yourself by cloning the repository, changing to the directory containing the Dockerfile and executing the `docker build` command. Remember to replace the `APP`, `VERSION` and `OPERATING-SYSTEM` path placeholders in the example command below with the correct values.
-
-```console
-git clone https://github.com/bitnami/containers.git
-cd bitnami/APP/VERSION/OPERATING-SYSTEM
-docker build -t bitnami/APP:latest .
-```
+The Bitnami Grafana Image Renderer Docker image is only available to [Bitnami Secure Images](https://bitnami.com) customers.
 
 ## Connecting to other containers
 
@@ -112,10 +94,11 @@ The following tables list the main variables you can set.
 
 #### Customizable environment variables
 
-| Name                                    | Description                           | Default Value |
-|-----------------------------------------|---------------------------------------|---------------|
-| `GRAFANA_IMAGE_RENDERER_LISTEN_ADDRESS` | Grafana Image Renderer listen address | `127.0.0.1`   |
-| `GRAFANA_IMAGE_RENDERER_PORT_NUMBER`    | Grafana Image Renderer port number    | `8080`        |
+| Name                                    | Description                                                                       | Default Value                             |
+|-----------------------------------------|-----------------------------------------------------------------------------------|-------------------------------------------|
+| `GRAFANA_IMAGE_RENDERER_LISTEN_ADDRESS` | Grafana Image Renderer listen address                                             | `127.0.0.1`                               |
+| `GRAFANA_IMAGE_RENDERER_PORT_NUMBER`    | Grafana Image Renderer port number                                                | `8080`                                    |
+| `GRAFANA_IMAGE_RENDERER_EXTRA_ENV_FILE` | File to store extra environment variables for the Grafana Image Renderer service. | `${GRAFANA_IMAGE_RENDERER_BASE_DIR}/.env` |
 
 #### Read-only environment variables
 
@@ -137,13 +120,7 @@ The Bitnami Grafana Image Renderer Docker image from the [Bitnami Secure Images]
 
 ## Logging
 
-The Bitnami Grafana Image Renderer Docker image sends the container logs to the `stdout`. To view the logs:
-
-```console
-docker logs grafana-image-renderer
-```
-
-You can configure the containers [logging driver](https://docs.docker.com/engine/admin/logging/overview/) using the `--log-driver` option if you wish to consume the container logs differently. In the default configuration docker uses the `json-file` driver.
+The Bitnami Grafana Image Renderer Docker image sends the container logs to the `stdout`. You can configure the containers [logging driver](https://docs.docker.com/engine/admin/logging/overview/) using the `--log-driver` option if you wish to consume the container logs differently. In the default configuration docker uses the `json-file` driver.
 
 ## Notable Changes
 

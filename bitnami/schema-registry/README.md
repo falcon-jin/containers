@@ -7,11 +7,17 @@ Trademarks: This software listing is packaged by Bitnami. The respective tradema
 
 ## TL;DR
 
-Use this quick command to run the container.
-
 ```console
 docker run --name schema-registry bitnami/schema-registry:latest
 ```
+
+## Using `docker-compose.yml`
+
+The docker-compose.yaml file of this container can be found in the [Bitnami Containers repository](https://github.com/bitnami/containers/).
+
+[https://github.com/bitnami/containers/tree/main/bitnami/schema-registry/docker-compose.yml](https://github.com/bitnami/containers/tree/main/bitnami/schema-registry/docker-compose.yml)
+
+Please be aware this file has not undergone internal testing. Consequently, we advise its use exclusively for development or testing purposes. For production-ready deployments, we highly recommend utilizing its associated [Bitnami Helm chart](https://github.com/bitnami/charts/tree/main/bitnami/schema-registry).
 
 ## Why use Bitnami Secure Images?
 
@@ -40,29 +46,7 @@ Subscribe to project updates by watching the [bitnami/containers GitHub reposito
 
 ## Get this image
 
-The recommended way to get the Bitnami schema-registry Docker Image is to pull the prebuilt image from the [Docker Hub Registry](https://hub.docker.com/r/bitnami/schema-registry).
-
-```console
-docker pull bitnami/schema-registry:latest
-```
-
-To use a specific version, you can pull a versioned tag. You can view the [list of available versions](https://hub.docker.com/r/bitnami/schema-registry/tags/) in the Docker Hub Registry.
-
-```console
-docker pull bitnami/schema-registry:[TAG]
-```
-
-If you wish, you can also build the image yourself by cloning the repository, changing to the directory containing the Dockerfile and executing the `docker build` command. Remember to replace the `APP`, `VERSION` and `OPERATING-SYSTEM` path placeholders in the example command below with the correct values.
-
-```console
-git clone https://github.com/bitnami/containers.git
-cd bitnami/APP/VERSION/OPERATING-SYSTEM
-docker build -t bitnami/APP:latest .
-```
-
-## Using `docker-compose.yaml`
-
-Please be aware this file has not undergone internal testing. Consequently, we advise its use exclusively for development or testing purposes. For production-ready deployments, we highly recommend utilizing its associated [Bitnami Helm chart](https://github.com/bitnami/charts/tree/main/bitnami/schema-registry).
+The Bitnami Confluent Schema Registry Docker image is only available to [Bitnami Secure Images](https://bitnami.com) customers.
 
 ## Configuration
 
@@ -111,8 +95,6 @@ The following tables list the main variables you can set.
 | `SCHEMA_REGISTRY_DEFAULT_LISTENERS`     | Comma-separated list of listeners that listen for API requests over either HTTP or HTTPS. | `http://0.0.0.0:8081`                                                    |
 | `SCHEMA_REGISTRY_DEFAULT_KAFKA_BROKERS` | List of Kafka brokers to connect to.                                                      | `PLAINTEXT://localhost:9092`                                             |
 
-When you start the Confluent Schema Registry image, you can adjust the configuration of the instance by passing one or more environment variables either on the docker-compose file or on the `docker run` command line. Please note that some variables are only considered when the container is started for the first time.
-
 #### Kafka settings
 
 Please check the configuration settings for the `kafka` service in the [Kafka's README file](https://github.com/bitnami/containers/tree/main/bitnami/kafka#configuration).
@@ -127,34 +109,12 @@ The Schema Registry container can be set up to serve clients securely using TLS.
 
 The `keystore` and `truststore` **must** be mounted in the `/opt/bitnami/schema-registry/certs` directory as `ssl.keystore.jks` and `ssl.truststore.jks` respectively. Currently, only JKS formats are supported. Note that the environment variables `SCHEMA_REGISTRY_SSL_KEYSTORE_LOCATION` or `SCHEMA_REGISTRY_SSL_TRUSTSTORE_LOCATION` **will not** override the expected location or file names. Please follow the instructions provided or you will get this error at startup: *ERROR ==> In order to configure HTTPS access, you must mount your `ssl.keystore.jks` (and optionally the `ssl.truststore.jks`) to the /opt/bitnami/schema-registry/certs directory*.
 
-Here is a `docker-compose.yml` example that exposes a TLS listener on port `8082`:
-
-```yaml
-schema-registry:
-  image: bitnami/schema-registry:latest
-  ports:
-    - 8081:8081
-    - 8082:8082
-  depends_on:
-    - kafka
-  environment:
-    - SCHEMA_REGISTRY_KAFKA_BROKERS=PLAINTEXT://kafka:9092
-    - SCHEMA_REGISTRY_HOST_NAME=schema-registry
-    - SCHEMA_REGISTRY_LISTENERS=http://0.0.0.0:8081,https://0.0.0.0:8082
-    - SCHEMA_REGISTRY_SSL_KEYSTORE_PASSWORD=keystore
-    - SCHEMA_REGISTRY_SSL_TRUSTSTORE_PASSWORD=keystore
-    - SCHEMA_REGISTRY_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM=none
-    - SCHEMA_REGISTRY_CLIENT_AUTHENTICATION=REQUESTED
-  volumes:
-    - ./keystore.jks:/opt/bitnami/schema-registry/certs/keystore.jks:ro
-    - ./truststore.jks:/opt/bitnami/schema-registry/certs/truststore.jks:ro
-```
-
 ### FIPS configuration in Bitnami Secure Images
 
 The Bitnami Confluent Schema Registry Docker image from the [Bitnami Secure Images](https://go-vmware.broadcom.com/contact-us) catalog includes extra features and settings to configure the container with FIPS capabilities. You can configure the next environment variables:
 
 - `OPENSSL_FIPS`: whether OpenSSL runs in FIPS mode or not. `yes` (default), `no`.
+- `JAVA_TOOL_OPTIONS`: controls Java FIPS mode. Use `-Djava.security.properties==/opt/bitnami/java/conf/security/java.security.restricted` (restricted), `-Djava.security.properties==/opt/bitnami/java/conf/security/java.security.relaxed` (relaxed), or `-Djava.security.properties==/opt/bitnami/java/conf/security/java.security.original` (off).
 
 ## License
 
