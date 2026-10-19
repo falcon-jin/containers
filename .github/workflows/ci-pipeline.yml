@@ -68,6 +68,10 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
+          # Safe here: this job only runs once a maintainer applies the 'verify' label (see the 'get-containers' job's `if:`),
+          # has read-only contents permission and no secrets, and the fork code is only read as data
+          # (Dockerfiles and .licenserc.yaml) by the license header linter.
+          allow-unsafe-pr-checkout: true
       - id: get-modified-files
         name: 'Get modified files'
         env:
@@ -81,7 +85,7 @@ jobs:
             echo "result=skip" >> $GITHUB_OUTPUT
           fi
       - name: Check license Headers
-        uses: apache/skywalking-eyes/header@61275cc80d0798a405cb070f7d3a8aaf7cf2c2c1
+        uses: apache/skywalking-eyes/header@a196742f472feaffafea537ce5a2a4c3c53a8de4
         if: ${{ steps.get-modified-files.outputs.result == 'success' }}
   auto-pr-review:
     runs-on: ubuntu-latest
